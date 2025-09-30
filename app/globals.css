@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---- Base theme (soft grey canvas like your mock) ---- */
+:root {
+    --canvas: #eef3f4;
+    /* soft grey/teal tint */
+    --brand-teal: #23A094;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    background: var(--canvas);
+    color: rgb(31 41 55);
+}
+
+/* Subtle vignette for depth */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(1200px 600px at 30% -10%, rgba(255, 255, 255, .9), transparent 60%),
+        radial-gradient(1200px 600px at 80% -20%, rgba(255, 255, 255, .9), transparent 65%);
+    z-index: -1;
+}
+
+/* Reusable card + shadows like screenshots */
+.card {
+    @apply bg-white rounded-2xl shadow-card border border-gray-100;
+}
+
+.shadow-card {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, .08);
+}
+
+/* Header pill */
+.pill {
+    @apply bg-white rounded-xl border border-gray-100 shadow-card;
+}
+
+/* Small chips for members */
+.chip {
+    @apply inline-flex items-center px-2 py-0.5 text-xs rounded-full;
+}
+
+.chip-emerald {
+    @apply bg-emerald-50 text-emerald-700;
+}
+
+.chip-gray {
+    @apply bg-gray-100 text-gray-700;
+}
+
+/* Floating button (not used yet here, but ready) */
+.fab {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    @apply rounded-full px-5 py-3 text-white;
+    background: var(--brand-teal);
+    box-shadow: 0 14px 30px rgba(35, 160, 148, .35);
+}
+
+.fab:hover {
+    filter: brightness(.95);
+}
