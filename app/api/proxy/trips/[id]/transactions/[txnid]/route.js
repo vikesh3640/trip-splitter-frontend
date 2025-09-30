@@ -1,5 +1,5 @@
 // app/api/proxy/trips/[id]/transactions/[txnid]/route.js
-import { forwardJSON, forwardNoBody } from "../../../_utils";
+import { forwardJSON, forwardNoBody } from '../../../../_utils';
 
 export async function PUT(req, { params }) {
   // forward correctly as PUT
