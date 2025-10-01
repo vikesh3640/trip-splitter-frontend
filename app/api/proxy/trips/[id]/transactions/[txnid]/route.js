@@ -2,7 +2,6 @@
 import { forwardJSON, forwardNoBody } from '../../../../_utils';
 
 export async function PUT(req, { params }) {
-  // forward correctly as PUT
   return forwardJSON(req, `/api/transactions/${params.txnid}`, "PUT");
 }
 

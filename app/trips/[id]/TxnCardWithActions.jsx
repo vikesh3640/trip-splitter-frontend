@@ -1,4 +1,3 @@
-// app/trips/[id]/TxnCardWithActions.jsx
 "use client";
 
 import { useEffect, useMemo, useState, useTransition } from "react";

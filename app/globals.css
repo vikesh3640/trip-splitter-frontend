@@ -2,10 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ---- Base theme (soft grey canvas like your mock) ---- */
 :root {
     --canvas: #eef3f4;
-    /* soft grey/teal tint */
     --brand-teal: #23A094;
 }
 
@@ -19,7 +17,6 @@ body {
     color: rgb(31 41 55);
 }
 
-/* Subtle vignette for depth */
 body::before {
     content: "";
     position: fixed;
@@ -31,7 +28,6 @@ body::before {
     z-index: -1;
 }
 
-/* Reusable card + shadows like screenshots */
 .card {
     @apply bg-white rounded-2xl shadow-card border border-gray-100;
 }
@@ -45,7 +41,6 @@ body::before {
     @apply bg-white rounded-xl border border-gray-100 shadow-card;
 }
 
-/* Small chips for members */
 .chip {
     @apply inline-flex items-center px-2 py-0.5 text-xs rounded-full;
 }
@@ -58,7 +53,6 @@ body::before {
     @apply bg-gray-100 text-gray-700;
 }
 
-/* Floating button (not used yet here, but ready) */
 .fab {
     position: fixed;
     right: 1.5rem;
@@ -70,4 +64,69 @@ body::before {
 
 .fab:hover {
     filter: brightness(.95);
+}
+
+/* Floating Action Bar */
+
+.fab-bar {
+    position: fixed;
+    right: 1.5rem;
+    /* 24px */
+    bottom: 1.5rem;
+    /* 24px */
+    display: flex;
+    gap: 0.75rem;
+    z-index: 50;
+}
+
+
+.fab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: none;
+    border-radius: 9999px;
+    padding: 0.875rem 1.25rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(180deg, #0ea5a2 0%, #05978f 100%);
+    box-shadow: 0 10px 30px rgba(6, 95, 70, 0.25), 0 2px 6px rgba(6, 95, 70, 0.25);
+    transition: transform 0.12s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.fab-btn:hover {
+    transform: translateY(-1px);
+}
+
+.fab-btn:active {
+    transform: translateY(0);
+    opacity: 0.95;
+}
+
+.fab-btn svg {
+    fill: currentColor;
+}
+
+
+.fab-btn--secondary {
+    background: #ffffff;
+    color: #0f766e;
+    border: 1px solid rgba(15, 118, 110, 0.18);
+    box-shadow: 0 8px 24px rgba(2, 44, 34, 0.12), 0 2px 6px rgba(2, 44, 34, 0.12);
+}
+
+.fab-btn--secondary:hover {
+    background: linear-gradient(180deg, #ffffff 0%, #f7fffe 100%);
+    transform: translateY(-1px);
+}
+
+.fab-btn--secondary:active {
+    transform: translateY(0);
+    opacity: 0.98;
+}
+
+
+
+@media (max-width: 420px) {
+  .fab-bar { flex-direction: column-reverse; right: 1rem; bottom: 1rem; }
 }

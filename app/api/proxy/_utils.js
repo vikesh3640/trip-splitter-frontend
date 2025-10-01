@@ -14,22 +14,20 @@ function buildHeaders() {
 // Forward raw (multipart/form-data, streams)
 export async function forwardRaw(req, path, method = "POST") {
   const headers = buildHeaders();
-  // preserve incoming content-type & boundary
   const ct = req.headers.get("content-type");
   if (ct) headers.set("content-type", ct);
 
   const url = new URL(path, BACKEND_BASE).toString();
-  // Node fetch requires duplex when streaming a body
   return fetch(url, {
     method,
     headers,
-    body: req.body,   // stream straight through
+    body: req.body,  
     cache: "no-store",
     duplex: "half",
   });
 }
 
-// For JSON bodies (pass-through raw text)
+// For JSON bodies 
 export async function forwardJSON(req, path, method = "POST") {
   const headers = buildHeaders();
   headers.set("content-type", "application/json");
@@ -45,7 +43,6 @@ export async function forwardNoBody(path, method = "GET") {
   return fetch(url, { method, headers, cache: "no-store" });
 }
 
-// Generic helper if you need it elsewhere (does not copy content-encoding)
 export async function proxyFetch(req, path, opts = {}) {
   const headers = buildHeaders();
   if (opts.headers) {

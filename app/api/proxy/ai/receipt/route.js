@@ -1,4 +1,3 @@
-// app/api/proxy/ai/receipt/route.js
 import { forwardRaw } from "../../_utils";
 
 export const runtime = "nodejs";
@@ -7,14 +6,12 @@ export async function POST(req) {
   try {
     const upstream = await forwardRaw(req, "/api/ai/receipt", "POST");
 
-    // Force decode on the server, then re-send clean JSON
+   
     const text = await upstream.text();
     const status = upstream.status;
 
     return new Response(text, {
-      status,
-      headers: {
-        // Always send explicit JSON without any content-encoding
+      status,      headers: {
         "content-type":
           upstream.headers.get("content-type") || "application/json",
         "cache-control": "no-store",

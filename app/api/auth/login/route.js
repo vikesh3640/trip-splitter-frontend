@@ -1,4 +1,3 @@
-// app/api/auth/login/route.js
 export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
@@ -19,7 +18,7 @@ export async function POST(req) {
       uid: decoded.uid,
     });
 
-    // Cookie for your proxy → backend auth
+    // Cookie for our proxy → backend auth
     res.cookies.set("fb_token", idToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -30,7 +29,6 @@ export async function POST(req) {
 
     return res;
   } catch (err) {
-    // surface the error so you can see it in Vercel logs
     return NextResponse.json(
       { error: "verifyIdToken failed", detail: String(err?.message || err) },
       { status: 500 }
