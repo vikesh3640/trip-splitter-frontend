@@ -1,3 +1,6 @@
+// app/api/auth/session/route.js
+export const runtime = "nodejs";
+
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { verifyIdToken } from "@/lib/firebaseAdmin";
@@ -13,7 +16,7 @@ export async function GET() {
       email: decoded.email || null,
       uid: decoded.uid,
     });
-  } catch {
+  } catch (e) {
     return NextResponse.json({ signedIn: false });
   }
 }

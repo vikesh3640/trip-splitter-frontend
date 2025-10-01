@@ -1,4 +1,6 @@
 // app/api/auth/login/route.js
+export const runtime = "nodejs";
+
 import { NextResponse } from "next/server";
 import { verifyIdToken } from "@/lib/firebaseAdmin";
 
@@ -10,25 +12,28 @@ export async function POST(req) {
     }
 
     const decoded = await verifyIdToken(idToken);
+
     const res = NextResponse.json({
       ok: true,
       email: decoded.email || null,
       uid: decoded.uid,
     });
 
-    // 1h cookie; tweak maxAge as you like
+    // Cookie for your proxy → backend auth
     res.cookies.set("fb_token", idToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60,
+      maxAge: 60 * 60, // 1 hour
     });
 
     return res;
   } catch (err) {
-    const msg = String(err?.message || err);
-    const status = msg.includes("FIREBASE_ADMIN_NOT_CONFIGURED") ? 500 : 401;
-    return NextResponse.json({ error: msg }, { status });
+    // surface the error so you can see it in Vercel logs
+    return NextResponse.json(
+      { error: "verifyIdToken failed", detail: String(err?.message || err) },
+      { status: 500 }
+    );
   }
 }
