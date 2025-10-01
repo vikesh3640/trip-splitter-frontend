@@ -1,12 +1,25 @@
 // app/api/proxy/ai/receipt/route.js
 import { forwardRaw } from "../../_utils";
 
-export const runtime = "nodejs"; // ensure it's not on the Edge (keeps streams intact)
+export const runtime = "nodejs";
 
 export async function POST(req) {
   try {
-    // Pass-through multipart/form-data to the backend AI endpoint
-    return await forwardRaw(req, "/api/ai/receipt", "POST");
+    const upstream = await forwardRaw(req, "/api/ai/receipt", "POST");
+
+    // Force decode on the server, then re-send clean JSON
+    const text = await upstream.text();
+    const status = upstream.status;
+
+    return new Response(text, {
+      status,
+      headers: {
+        // Always send explicit JSON without any content-encoding
+        "content-type":
+          upstream.headers.get("content-type") || "application/json",
+        "cache-control": "no-store",
+      },
+    });
   } catch (e) {
     if (e?.message === "NO_AUTH") {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
@@ -19,7 +32,10 @@ export async function POST(req) {
         error: "Proxy error",
         detail: String(e?.message || e),
       }),
-      { status: 502, headers: { "content-type": "application/json" } }
+      {
+        status: 502,
+        headers: { "content-type": "application/json" },
+      }
     );
   }
 }
